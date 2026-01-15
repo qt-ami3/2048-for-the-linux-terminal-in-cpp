@@ -1,6 +1,7 @@
 
   //2048 clone in the linux terminal.
-  //Copyright (C) 2025 River Knuuttila, common alias, Annie.
+  //2048 clone Copyright (c) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+  //author: River Knuuttila (common alias: Annie, Ann, Annie Knuuttila)
 
   //This program is free software: you can redistribute it and/or modify
   //it under the terms of the GNU General Public License as published by
@@ -34,7 +35,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <cstring>
-#include "projectfiles/projectLibrary.hpp" //change depending on your file path.
+#include "projectfiles/projectLibrary.hpp"
   
 string tileColor(int value)
 {
@@ -109,7 +110,7 @@ int main(){
 
   int score = 0;
   
-  ifstream file("projectfiles/copywriteNotice.txt"); //change depending on your file path.
+  ifstream file("projectfiles/copywriteNotice.txt");
     
   if (!file) 
   {
@@ -205,7 +206,7 @@ if (noticeA=="r")
 else if (noticeA=="d")
 {
   
-  ifstream file("projectfiles/License text"); //change depending on your file path.
+  ifstream file("./LICENSE");
     
   if (!file) 
   {

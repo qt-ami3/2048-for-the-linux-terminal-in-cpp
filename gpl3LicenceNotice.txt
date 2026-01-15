@@ -1,4 +1,0 @@
-2048 clone Copyright (C) 2025 River Knuuttila.
-This program comes with ABSOLUTELY NO WARRANTY; for details type (d).
-This is free software, and you are welcome to redistribute it
-under certain conditions; type (d) for details, (r) to run or (q) to quit.
