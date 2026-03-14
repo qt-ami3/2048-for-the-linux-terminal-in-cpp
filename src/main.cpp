@@ -18,12 +18,13 @@
   
   //Concerns or questions? Reach out at: riverknuuttila2@outlook.com
 
-#include <sstream>
-#include <iostream>
-#include <stdio.h>
 #include <string>
+#include <sstream>
+#include <stdio.h>
 #include <fstream>
-#include "projectFiles/functions.hpp"
+#include <iostream>
+#include "./functions.hpp"
+#include "../libs/inih/INIReader.h"
   
 string tileColor(int value) {
   switch (value) {
@@ -70,6 +71,30 @@ void printBox(int displayNumber) {
   }
 }
 
+void scoreCheck(int score, int& first, int& second, int& third, const string& iniPath) {
+  if (score > first) {
+    cout << "New 1st: " << score << endl;
+    third = second;
+    second = first;
+    first = score;
+  } else if (score > second) {
+    cout << "New 2nd: " << score << endl;
+    third = second;
+    second = score;
+  } else if (score > third) {
+    cout << "New 3rd: " << score << endl;
+    third = score;
+  } else {
+    cout << "Score: " << score << endl;
+    return;
+  }
+  ofstream ini(iniPath);
+  ini << "[leaderBoard]\n"
+    << "first="  << first  << "\n"
+    << "second=" << second << "\n"
+    << "third="  << third  << "\n";
+}
+
 void printGame(int playingGrid[4][4]) { //prints the playingGrid and cubes containing numbers.
   cout << "┌────┬────┬────┬────┐" << endl;
   for (int i = 0; i < 4; i++) {
@@ -80,14 +105,24 @@ void printGame(int playingGrid[4][4]) { //prints the playingGrid and cubes conta
     if (i < 3)
       cout << "├────┼────┼────┼────┤" << endl;
   }
-  cout << "└────┴────┴────┴────┘" << endl;
+  cout << "└────┴────┴────┴────┘";
 }
 
 int main() {
 
+  INIReader reader("../usr/leaderBoard.ini");
+  
+  if (reader.ParseError() < 0) {
+    cout<<"failed to load leaderBoard\n";
+  }
+
+  int lbFirst  = reader.GetInteger("leaderBoard", "first",  0);
+  int lbSecond = reader.GetInteger("leaderBoard", "second", 0);
+  int lbThird  = reader.GetInteger("leaderBoard", "third",  0);
+
   int score = 0;
   
-  ifstream file("projectFiles/copywriteNotice.txt");
+  ifstream file("../projectFiles/copywriteNotice.txt");
     
   if (!file) { 
     cerr<<"Could not open the file!"<<endl;
@@ -113,14 +148,17 @@ if (noticeA=="r") {
 
   clearScreen();
     printGame(playingGrid);
+    cout<<endl;
 
   setBufferedInput(false);
 
   while (true) { //main gamestate.
     char cont = getchar();
 
-    if (cont == 'q')
+    if (cont == 'q') {
+      scoreCheck(score, lbFirst, lbSecond, lbThird, "../usr/leaderBoard.ini");
       break;
+    }
 
     bool moved = false;
 
@@ -148,10 +186,12 @@ if (noticeA=="r") {
       newRandomBox(playingGrid);
         clearScreen();
           printGame(playingGrid);
+          getScore(playingGrid, score);
+          cout<<"Score: "<<score<<endl;
 
       if (!canMove(playingGrid)) { //lose condition.
-        getScore(playingGrid,score);
         cout<<"Game Over!"<<endl<<"score: "<<score<<endl;
+        scoreCheck(score, lbFirst, lbSecond, lbThird, "../usr/leaderBoard.ini");
         break;
       }
     }
@@ -161,6 +201,7 @@ if (noticeA=="r") {
         if (playingGrid[i][j]==2048) {
           getScore(playingGrid,score);
           cout<<" GG, you win! :3"<<endl<<"score : "<<score<<endl; //win condition
+          scoreCheck(score, lbFirst, lbSecond, lbThird, "../usr/leaderBoard.ini");
           break;
         }
       }
@@ -171,7 +212,7 @@ if (noticeA=="r") {
 }
 else if (noticeA=="d") {
   
-  ifstream file("LICENSE");
+  ifstream file("../LICENSE");
     
   if (!file) { 
     cerr<<"Could not open the file!"<<endl;

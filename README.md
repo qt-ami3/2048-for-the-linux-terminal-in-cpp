@@ -1,14 +1,18 @@
 # 2048 for the Linux terminal
 
-![2048shell screenshot](screenShots/screenShotOne.png)
+![2048shell screenshot](./projectFiles/screenShots/screenShotOne.png)
 
 ## to compile:
 ```
 Install g++ with your favorite package manager, for example; sudo apt install g++
 
-g++ main.cpp
+in src directory;
+    
+    g++ -std=c++17 main.cpp ../libs/inih/ini.c ../libs/inih/INIReader.cpp -o fileName
 
-Optional; g++ main.cpp -o outputFileName
+in root directory;
+
+    g++ -std=c++17 src/main.cpp libs/inih/ini.c libs/inih/INIReader.cpp -o 2048
 ```
 
 Filepaths in 2048source.cpp need to be changed if you plan on moving the compiled file outside of the directory it is in but it is ready to compile straight out of clone.

@@ -211,10 +211,11 @@ bool canMove(int grid[4][4]) { //can it move?
 }
 
 void getScore (int array[4][4],int &score) { //gets total score of all the different cubes combines.
+  score = 0;
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
-      score = score + array[i][j];
+      score += array[i][j];
     }
-  } 
+  }
 }
 
