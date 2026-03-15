@@ -21,3 +21,7 @@ Filepaths in 2048source.cpp need to be changed if you plan on moving the compile
 Main will compile but throw error if text files are removed.
 
 3nd edition of 2048 in the linux shell, adds better grid borders.
+
+## Credits:
+
+- inih [benhoyt](https://github.com/benhoyt/inih) (New BSD license)
