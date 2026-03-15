@@ -159,7 +159,6 @@ int main() {
 
 if (noticeA=="r") {
   
-  
   //cout << "Enable RAM readings? (y/n): ";
   //string ramToggle;
   //cin >> ramToggle;
