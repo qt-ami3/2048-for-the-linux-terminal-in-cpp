@@ -25,7 +25,8 @@
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
-#include "./functions.hpp"
+#include "./include/sysInfo.hpp"
+#include "./include/functions.hpp"
 #include "../libs/inih/INIReader.h"
   
 string tileColor(int value) {
@@ -157,6 +158,13 @@ int main() {
   cin>>noticeA;
 
 if (noticeA=="r") {
+  
+  
+  //cout << "Enable RAM readings? (y/n): ";
+  //string ramToggle;
+  //cin >> ramToggle;
+  //bool ramEnabled = (ramToggle == "y");
+
   int playingGrid[4][4] = {0}; //multidimensional array initialized to zero. represented by logic of functions above.
 
   newRandomBox(playingGrid);
@@ -166,7 +174,7 @@ if (noticeA=="r") {
 
   clearScreen();
     printGame(playingGrid, lbFirst, lbSecond, lbThird, score);
-    cout<<endl;
+    //printSysInfo(ramEnabled);
 
   setBufferedInput(false);
 
@@ -207,6 +215,7 @@ if (noticeA=="r") {
           getScore(playingGrid, score);
           scoreCheck(score, lbFirst, lbSecond, lbThird, "../usr/leaderBoard.ini");
           printGame(playingGrid, lbFirst, lbSecond, lbThird, score);
+          //printSysInfo(ramEnabled);
 
       if (!canMove(playingGrid)) { //lose condition.
         cout<<"Game Over!"<<endl<<"score: "<<score<<endl;
