@@ -85,7 +85,6 @@ void scoreCheck(int score, int& first, int& second, int& third, const string& in
     cout << "New 3rd: " << score << endl;
     third = score;
   } else {
-    cout << "Score: " << score << endl;
     return;
   }
   ofstream ini(iniPath);
@@ -95,15 +94,21 @@ void scoreCheck(int score, int& first, int& second, int& third, const string& in
     << "third="  << third  << "\n";
 }
 
-void printGame(int playingGrid[4][4]) { //prints the playingGrid and cubes containing numbers.
-  cout << "┌────┬────┬────┬────┐" << endl;
+void printGame(int playingGrid[4][4], int& first, int& second, int& third, int score) { //prints the playingGrid and cubes containing numbers.
+  cout << "┌────┬────┬────┬────┐" << " 1st: " << first << endl;
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       printBox(playingGrid[i][j]);
     }
     cout << "│" << endl;
-    if (i < 3)
-      cout << "├────┼────┼────┼────┤" << endl;
+    if (i < 3) {
+      if (i == 0)
+        cout << "├────┼────┼────┼────┤" << " 2nd: " << second << endl;
+      if (i == 1)
+        cout << "├────┼────┼────┼────┤" << " 3rd: " << third << endl;
+      else if (i == 2)
+        cout << "├────┼────┼────┼────┤" << " Score: " << score << endl;
+    }
   }
   cout << "└────┴────┴────┴────┘";
 }
@@ -146,8 +151,10 @@ if (noticeA=="r") {
   newRandomBox(playingGrid);
     newRandomBox(playingGrid);
 
+  getScore(playingGrid, score);
+
   clearScreen();
-    printGame(playingGrid);
+    printGame(playingGrid, lbFirst, lbSecond, lbThird, score);
     cout<<endl;
 
   setBufferedInput(false);
@@ -156,6 +163,7 @@ if (noticeA=="r") {
     char cont = getchar();
 
     if (cont == 'q') {
+      cout << endl;
       scoreCheck(score, lbFirst, lbSecond, lbThird, "../usr/leaderBoard.ini");
       break;
     }
@@ -168,15 +176,19 @@ if (noticeA=="r") {
         switch (direction) { //switch statement for player inputs
         case 'A': // up key
           moved = moveUp(playingGrid);
+            scoreCheck(score, lbFirst, lbSecond, lbThird, "../usr/leaderBoard.ini");
             break;
         case 'B': // down key
             moved = moveDown(playingGrid);
+            scoreCheck(score, lbFirst, lbSecond, lbThird, "../usr/leaderBoard.ini");
             break;
         case 'C': // right key
           moved = moveRight(playingGrid);
+            scoreCheck(score, lbFirst, lbSecond, lbThird, "../usr/leaderBoard.ini");
             break;
         case 'D': // left key
           moved = moveLeft(playingGrid);
+            scoreCheck(score, lbFirst, lbSecond, lbThird, "../usr/leaderBoard.ini");
             break;
         }
       }
@@ -185,9 +197,8 @@ if (noticeA=="r") {
     if (moved) {
       newRandomBox(playingGrid);
         clearScreen();
-          printGame(playingGrid);
           getScore(playingGrid, score);
-          cout<<"Score: "<<score<<endl;
+          printGame(playingGrid, lbFirst, lbSecond, lbThird, score);
 
       if (!canMove(playingGrid)) { //lose condition.
         cout<<"Game Over!"<<endl<<"score: "<<score<<endl;
