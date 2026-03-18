@@ -230,7 +230,6 @@ if (noticeA=="r") {
     char cont = getchar();
 
     if (cont == 'q') {
-      scoreCheck(score, lbFirst, lbSecond, lbThird, lbFirstName, lbSecondName, lbThirdName, lbPath);
       break;
     }
 
@@ -263,6 +262,7 @@ if (noticeA=="r") {
           if (pos > 0 && (bestPosition == 0 || pos < bestPosition)) {
             bestPosition = pos;
             setBufferedInput(true);
+            tcflush(STDIN_FILENO, TCIFLUSH);
             cout << endl << "You reached #" << pos << "! Enter your name: ";
             string playerName;
             cin >> playerName;
@@ -285,8 +285,6 @@ if (noticeA=="r") {
 
       if (!canMove(playingGrid)) { //lose condition.
         cout <<"Game Over!" << endl << "score: "<< score << endl;
-        int pos2 = scoreCheck(score, lbFirst, lbSecond, lbThird, lbFirstName, lbSecondName, lbThirdName, lbPath);
-        if (pos2 > 0 && (bestPosition == 0 || pos2 < bestPosition)) bestPosition = pos2;
         break;
       }
     }

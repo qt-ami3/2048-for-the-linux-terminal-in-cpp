@@ -2,6 +2,11 @@
 
 ![2048shell screenshot](./assets/screenShots/screenShotOne.png)
 
+## aur install:
+```
+yay -S 2048shell
+```
+
 ## to build:
 ```
 Install g++ and make with your favorite package manager, for example; sudo apt install g++ make
