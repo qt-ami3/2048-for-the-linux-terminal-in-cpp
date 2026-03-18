@@ -224,6 +224,8 @@ if (noticeA=="r") {
 
   setBufferedInput(false);
 
+  int origFirst = lbFirst, origSecond = lbSecond;
+  string origFirstName = lbFirstName, origSecondName = lbSecondName, origThirdName = lbThirdName;
   int bestPosition = 0;
 
   while (true) { //main loop.
@@ -290,9 +292,19 @@ if (noticeA=="r") {
     cout << endl << "You reached #" << bestPosition << "! Enter your name: ";
     string playerName;
     cin >> playerName;
-    if (bestPosition == 1) lbFirstName = playerName;
-    else if (bestPosition == 2) lbSecondName = playerName;
-    else lbThirdName = playerName;
+    if (bestPosition == 1) {
+      lbThird = origSecond; lbThirdName = origSecondName;
+      lbSecond = origFirst; lbSecondName = origFirstName;
+      lbFirst = score; lbFirstName = playerName;
+    } else if (bestPosition == 2) {
+      lbThird = origSecond; lbThirdName = origSecondName;
+      lbSecond = score; lbSecondName = playerName;
+      lbFirst = origFirst; lbFirstName = origFirstName;
+    } else {
+      lbThird = score; lbThirdName = playerName;
+      lbSecond = origSecond; lbSecondName = origSecondName;
+      lbFirst = origFirst; lbFirstName = origFirstName;
+    }
     ofstream ini(lbPath);
     ini << "[leaderBoard]\n"
       << "first="      << lbFirst      << "\n"
