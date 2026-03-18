@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall
 
-TARGET = 2048
+TARGET = 2048shell
 SRC = src/main.cpp libs/inih/INIReader.cpp libs/inih/ini.c
 BUILD_DIR = build
 

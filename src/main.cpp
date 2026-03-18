@@ -25,9 +25,24 @@
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
+#include <cstdlib>
+#include <filesystem>
 #include "./include/sysInfo.hpp"
 #include "./include/functions.hpp"
 #include "../libs/inih/INIReader.h"
+
+string getLeaderBoardPath() {
+  const char* xdg = getenv("XDG_DATA_HOME");
+  string dir;
+  if (xdg && xdg[0]) {
+    dir = string(xdg) + "/2048shell";
+  } else {
+    const char* home = getenv("HOME");
+    dir = string(home ? home : ".") + "/.local/share/2048shell";
+  }
+  filesystem::create_directories(dir);
+  return dir + "/leaderBoard.ini";
+}
 
 string tileColor(int value) {
   switch (value) {
@@ -154,7 +169,8 @@ int main() {
 
   bool won = false;
 
-  INIReader reader("../usr/leaderBoard.ini");
+  string lbPath = getLeaderBoardPath();
+  INIReader reader(lbPath);
 
   if (reader.ParseError() < 0) {
     cout<<"failed to load leaderBoard\n";
@@ -170,7 +186,7 @@ int main() {
 
   int score = 0;
 
-  ifstream file("../assets/copywriteNotice.txt");
+  ifstream file("/usr/share/2048shell/copywriteNotice.txt");
 
   if (!file) {
     cerr<<"Could not open the file!"<<endl;
@@ -214,7 +230,7 @@ if (noticeA=="r") {
     char cont = getchar();
 
     if (cont == 'q') {
-      scoreCheck(score, lbFirst, lbSecond, lbThird, lbFirstName, lbSecondName, lbThirdName, "../usr/leaderBoard.ini");
+      scoreCheck(score, lbFirst, lbSecond, lbThird, lbFirstName, lbSecondName, lbThirdName, lbPath);
       break;
     }
 
@@ -243,7 +259,7 @@ if (noticeA=="r") {
     if (moved) {
       newRandomBox(playingGrid);
           getScore(playingGrid, score);
-          int pos = scoreCheck(score, lbFirst, lbSecond, lbThird, lbFirstName, lbSecondName, lbThirdName, "../usr/leaderBoard.ini");
+          int pos = scoreCheck(score, lbFirst, lbSecond, lbThird, lbFirstName, lbSecondName, lbThirdName, lbPath);
           if (pos > 0 && (bestPosition == 0 || pos < bestPosition)) {
             bestPosition = pos;
             setBufferedInput(true);
@@ -253,7 +269,7 @@ if (noticeA=="r") {
             if (pos == 1) lbFirstName = playerName;
             else if (pos == 2) lbSecondName = playerName;
             else lbThirdName = playerName;
-            ofstream ini("../usr/leaderBoard.ini");
+            ofstream ini(lbPath);
             ini << "[leaderBoard]\n"
               << "first="      << lbFirst      << "\n"
               << "firstName="  << lbFirstName  << "\n"
@@ -269,7 +285,7 @@ if (noticeA=="r") {
 
       if (!canMove(playingGrid)) { //lose condition.
         cout <<"Game Over!" << endl << "score: "<< score << endl;
-        int pos2 = scoreCheck(score, lbFirst, lbSecond, lbThird, lbFirstName, lbSecondName, lbThirdName, "../usr/leaderBoard.ini");
+        int pos2 = scoreCheck(score, lbFirst, lbSecond, lbThird, lbFirstName, lbSecondName, lbThirdName, lbPath);
         if (pos2 > 0 && (bestPosition == 0 || pos2 < bestPosition)) bestPosition = pos2;
         break;
       }
@@ -293,7 +309,7 @@ if (noticeA=="r") {
 
 else if (noticeA=="d") {
 
-  ifstream file("../LICENSE");
+  ifstream file("/usr/share/licenses/2048shell/LICENSE");
 
   if (!file) {
     cerr<<"Could not open the file!"<<endl;
