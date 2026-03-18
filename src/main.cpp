@@ -261,23 +261,6 @@ if (noticeA=="r") {
           int pos = scoreCheck(score, lbFirst, lbSecond, lbThird, lbFirstName, lbSecondName, lbThirdName, lbPath);
           if (pos > 0 && (bestPosition == 0 || pos < bestPosition)) {
             bestPosition = pos;
-            setBufferedInput(true);
-            tcflush(STDIN_FILENO, TCIFLUSH);
-            cout << endl << "You reached #" << pos << "! Enter your name: ";
-            string playerName;
-            cin >> playerName;
-            if (pos == 1) lbFirstName = playerName;
-            else if (pos == 2) lbSecondName = playerName;
-            else lbThirdName = playerName;
-            ofstream ini(lbPath);
-            ini << "[leaderBoard]\n"
-              << "first="      << lbFirst      << "\n"
-              << "firstName="  << lbFirstName  << "\n"
-              << "second="     << lbSecond     << "\n"
-              << "secondName=" << lbSecondName << "\n"
-              << "third="      << lbThird      << "\n"
-              << "thirdName="  << lbThirdName  << "\n";
-            setBufferedInput(false);
           }
           clearScreen();
           printGame(playingGrid, lbFirst, lbSecond, lbThird, lbFirstName, lbSecondName, lbThirdName, score);
@@ -300,6 +283,25 @@ if (noticeA=="r") {
       }
     }
   } //End of main game loop.
+
+  if (bestPosition > 0) {
+    setBufferedInput(true);
+    tcflush(STDIN_FILENO, TCIFLUSH);
+    cout << endl << "You reached #" << bestPosition << "! Enter your name: ";
+    string playerName;
+    cin >> playerName;
+    if (bestPosition == 1) lbFirstName = playerName;
+    else if (bestPosition == 2) lbSecondName = playerName;
+    else lbThirdName = playerName;
+    ofstream ini(lbPath);
+    ini << "[leaderBoard]\n"
+      << "first="      << lbFirst      << "\n"
+      << "firstName="  << lbFirstName  << "\n"
+      << "second="     << lbSecond     << "\n"
+      << "secondName=" << lbSecondName << "\n"
+      << "third="      << lbThird      << "\n"
+      << "thirdName="  << lbThirdName  << "\n";
+  }
 
   setBufferedInput(true);
 
