@@ -2,7 +2,7 @@
 
 ![2048shell screenshot](./assets/screenShots/screenShotOne.png)
 
-## aur install:
+## AUR install:
 ```
 yay -S 2048shell
 ```
